@@ -1430,7 +1430,7 @@ async def handle_message(update, context):
             await update.message.reply_text("❌ لم أفهم رسالتك. استخدم /start")
         else:
             await update.message.reply_text("❌ I didn't understand. Use /start")
-def main():
+async def main_async():
     print("🤖 Starting Zain Islamic Bot...")
     
     try:
@@ -1450,35 +1450,14 @@ def main():
         application.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, handle_message))
 
         print("✅ Bot started successfully!")
-        application.run_polling()
+        await application.run_polling()
         
     except Exception as e:
         print(f"❌ Error: {e}")
 
 def main():
-    print("🤖 Starting Zain Islamic Bot...")
-    
-    try:
-        application = Application.builder().token(BOT_TOKEN).build()
-
-        # Add command handlers
-        application.add_handler(CommandHandler("start", start_command))
-        application.add_handler(CommandHandler("prayer", prayer_command))
-        application.add_handler(CommandHandler("hadith", show_hadith_categories))
-        application.add_handler(CommandHandler("duas", show_duas_categories))
-        application.add_handler(CommandHandler("tools", tools_command))
-        application.add_handler(CommandHandler("language", language_settings))
-        application.add_handler(CommandHandler("quran", show_quran_menu))
-
-        # Add callback and message handlers
-        application.add_handler(CallbackQueryHandler(handle_callback))
-        application.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, handle_message))
-
-        print("✅ Bot started successfully!")
-        application.run_polling()
-        
-    except Exception as e:
-        print(f"❌ Error: {e}")
+    """Synchronous wrapper for running the bot directly"""
+    asyncio.run(main_async())
 
 if __name__ == '__main__':
     main()
